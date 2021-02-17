@@ -39,12 +39,16 @@ export default function EmployeesForm() {
                 <Grid item xs={6}>
                     <Controls.Input label="full Name" name="fullName" value={values.fullName} onChange={handleInputChange} />
                     <Controls.Input label="email" name="email" value={values.email} onChange={handleInputChange} />
+                    <Controls.Input label="mobile" name="mobile" value={values.mobile} onChange={handleInputChange} />
+                    <Controls.Input label="city" name="city" value={values.city} onChange={handleInputChange} />
                 </Grid>
 
                 <Grid item xs={6}>
                     <Controls.RadioGroup name="gender" label="Gender" value={values.gender} onChange={handleInputChange} items={genderItems} />
                     <Controls.Select name="departmentId" label="Department" value={values.departmentId}
                         onChange={handleInputChange} options={employeeService.getDepartmentCollection()} />
+                    <Controls.DataPicker name="hireDate" label="Hire date" value={values.hireDate} onChange={handleInputChange} />
+                    <Controls.Checkbox name="isPermanent" label="Permanent Employee" value={values.isPermanent} onChange={handleInputChange} />
                 </Grid>
 
             </Grid>
