@@ -1,0 +1,6 @@
+makeStyles = bech tasna3 lutli classes
+
+spacing = Use the theme.spacing() helper to create consistent spacing between the elements of your UI.  (8px =1)
+
+
+ThemeProvider = bech tappliki theme fil app el kol

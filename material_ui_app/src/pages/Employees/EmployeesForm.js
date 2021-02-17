@@ -1,7 +1,12 @@
-import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import React from 'react';
+import Controls from '../../components/controls/Controls';
 import { Form, useForm } from '../../components/useForm';
 
+const genderItems = [
+    { id: 'male', title: 'Male' },
+    { id: 'female', title: 'Female' }
+]
 
 
 
@@ -17,7 +22,7 @@ const initialFvalues = {
     isPermanent: false
 }
 
-export default function EmployeesForm() { 
+export default function EmployeesForm() {
 
 
 
@@ -27,19 +32,16 @@ export default function EmployeesForm() {
     return (
         <Form>
             <Grid container>
+
                 <Grid item xs={6}>
-                    <TextField variant="outlined" label="full Name" name="fullName" value={values.fullName} onChange={handleInputChange} />
-                    <TextField variant="outlined" label="email" name="email" value={values.email} onChange={handleInputChange} />
+                    <Controls.Input label="full Name" name="fullName" value={values.fullName} onChange={handleInputChange} />
+                    <Controls.Input label="email" name="email" value={values.email} onChange={handleInputChange} />
                 </Grid>
+
                 <Grid item xs={6}>
-                    <FormControl>
-                        <FormLabel>Gender</FormLabel>
-                        <RadioGroup row name="gender" value={values.gender} onChange={handleInputChange} >
-                            <FormControlLabel value="male" control={<Radio />} label="Male" />
-                            <FormControlLabel value="female" control={<Radio />} label="Female" />
-                        </RadioGroup>
-                    </FormControl>
+                    <Controls.RadioGroup name="gender" label="Gender" value={values.gender} onChange={handleInputChange} items={genderItems} />
                 </Grid>
+
             </Grid>
         </Form>
     )
