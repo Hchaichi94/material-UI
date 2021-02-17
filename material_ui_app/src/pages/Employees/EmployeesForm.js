@@ -2,11 +2,14 @@ import { Grid } from '@material-ui/core';
 import React from 'react';
 import Controls from '../../components/controls/Controls';
 import { Form, useForm } from '../../components/useForm';
+import * as employeeService from '../../services/employeeService';
+
 
 const genderItems = [
     { id: 'male', title: 'Male' },
     { id: 'female', title: 'Female' }
 ]
+
 
 
 
@@ -40,6 +43,8 @@ export default function EmployeesForm() {
 
                 <Grid item xs={6}>
                     <Controls.RadioGroup name="gender" label="Gender" value={values.gender} onChange={handleInputChange} items={genderItems} />
+                    <Controls.Select name="departmentId" label="Department" value={values.departmentId}
+                        onChange={handleInputChange} options={employeeService.getDepartmentCollection()} />
                 </Grid>
 
             </Grid>
