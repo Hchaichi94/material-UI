@@ -8,22 +8,23 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import SearchIcon from '@material-ui/icons/Search';
 import React from 'react';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+
     },
     searchInput: {
         opacity: '0.6',
-        padding: '0px 8px',
+        padding: `0px ${theme.spacing(1)}px`,  /*interpolation */
         fontSize: '0.8rem',
         '&:hover': {
             backgroundColor: "#f2f2f2"
         },
         '& .MuiSvgIcon-root': {
-            marginRight: '8px'
+            marginRight: theme.spacing(1)
         }
     }
-});
+}));
 
 export default function Header() {
 
@@ -34,10 +35,13 @@ export default function Header() {
         <AppBar position="static" className={classes.root}>
             <Toolbar>
                 <Grid container alignItems="center">
+
                     <Grid item >
                         <InputBase placeholder="Search topics" className={classes.searchInput} startAdornment={<SearchIcon fontSize="small" />} />
                     </Grid>
+
                     <Grid item sm></Grid>
+
                     <Grid item >
 
                         <IconButton>
@@ -55,6 +59,7 @@ export default function Header() {
                         <IconButton>
                             <PowerSettingsNewIcon />
                         </IconButton>
+
                     </Grid>
                 </Grid>
             </Toolbar>
