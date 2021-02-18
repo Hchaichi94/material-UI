@@ -1,7 +1,9 @@
-import { makeStyles, Paper } from '@material-ui/core';
+import { makeStyles, Paper, TableBody, TableCell, TableRow } from '@material-ui/core';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
-import React from 'react';
+import React, { useState } from 'react';
 import PageHeader from '../../components/PageHeader';
+import userTable from '../../components/userTable';
+import * as employeeService from '../../services/employeeService';
 import EmployeesForm from './EmployeesForm';
 
 const useStyles = makeStyles(theme => ({
@@ -11,8 +13,20 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
+const headCells = [
+    { id: 'fullName', label: 'Employee Name' },
+    { id: 'email', label: 'Employee email' },
+    { id: 'mobile', label: 'Employee mobile' },
+    { id: 'department', label: 'Employee department' }
+]
+
+
+
 export default function Employees() {
     const classes = useStyles()
+    const [records, setRecords] = useState(employeeService.getAllEmployees())
+
+    const { TblContainer, TbHead } = userTable(records, headCells)
 
     return (
         <div>
@@ -20,6 +34,21 @@ export default function Employees() {
 
             <Paper className={classes.pageContent}>
                 <EmployeesForm />
+                <TblContainer>
+                    <TbHead />
+                    <TableBody>
+                        {records.map(item =>
+
+                        (<TableRow key={item.id}>
+                            <TableCell>{item.fullName}</TableCell>
+                            <TableCell>{item.email}</TableCell>
+                            <TableCell>{item.mobile}</TableCell>
+                            <TableCell>{item.department}</TableCell>
+                        </TableRow>
+                        )
+                        )}
+                    </TableBody>
+                </TblContainer>
             </Paper>
         </div>
     )

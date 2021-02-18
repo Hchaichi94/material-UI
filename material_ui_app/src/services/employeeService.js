@@ -10,7 +10,7 @@ export const getDepartmentCollection = () => ([
 
 const KEYS = {
 
-    employees: 'employeess',
+    employees: 'employees',
     employeeId: 'employeeId'
 
 }
@@ -18,10 +18,10 @@ const KEYS = {
 
 export function insertEmployee(data) {
 
-    let employeess = getAllEmployees()
+    let employees = getAllEmployees()
     data['id'] = generateEmployeeId()
-    employeess.push(data)
-    localStorage.setItem(KEYS.employees, JSON.stringify(employeess))
+    employees.push(data)
+    localStorage.setItem(KEYS.employees, JSON.stringify(employees))
 
 }
 
@@ -44,5 +44,12 @@ export function getAllEmployees() {
     if (localStorage.getItem(KEYS.employees) == null)
         localStorage.setItem(KEYS.employees, JSON.stringify([]))
 
-    return JSON.parse(localStorage.getItem(KEYS.employees))
+    const employees = JSON.parse(localStorage.getItem(KEYS.employees))
+    const deparments = getDepartmentCollection()
+
+    return employees.map(emp => ({
+        ...emp,
+        department: deparments[emp.departmentId - 1].title
+    }))
+
 }
