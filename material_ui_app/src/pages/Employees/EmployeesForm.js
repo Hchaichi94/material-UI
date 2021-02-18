@@ -49,6 +49,10 @@ export default function EmployeesForm() {
                         onChange={handleInputChange} options={employeeService.getDepartmentCollection()} />
                     <Controls.DataPicker name="hireDate" label="Hire date" value={values.hireDate} onChange={handleInputChange} />
                     <Controls.Checkbox name="isPermanent" label="Permanent Employee" value={values.isPermanent} onChange={handleInputChange} />
+                    <div>
+                        <Controls.Button text="Submit" type="Submit" />
+                        <Controls.Button text="Reset" type="Submit" color="default"/>
+                    </div>
                 </Grid>
 
             </Grid>
