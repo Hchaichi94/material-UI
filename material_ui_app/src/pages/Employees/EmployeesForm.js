@@ -10,9 +10,6 @@ const genderItems = [
     { id: 'female', title: 'Female' }
 ]
 
-
-
-
 const initialFvalues = {
     id: 0,
     fullName: '',
@@ -27,31 +24,78 @@ const initialFvalues = {
 
 export default function EmployeesForm() {
 
+    const validate = (fieldValues = values) => {
+        let temp = { ...errors }
 
+        if ('fullName' in fieldValues)
+            temp.fullName = fieldValues.fullName ? "" : "this field is required"
 
-    const { values, setValues, handleInputChange } = useForm(initialFvalues)
+        if ('email' in fieldValues)
+            temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "email is not valid"
 
+        if ('mobile' in fieldValues)
+            temp.mobile = fieldValues.mobile.length > 7 ? "" : "min 7 numbers required"
+
+        if ('departmentId' in fieldValues)
+            temp.departmentId = fieldValues.departmentId.length != 0 ? "" : "this field is required"
+
+        setErrors({
+            ...temp
+        })
+
+        if (fieldValues == values)
+            return Object.values(temp).every(x => x == "")
+    }
+
+    const { values, setValues, handleInputChange, errors, setErrors, resetForm } = useForm(initialFvalues, true, validate)
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        if (validate())
+            window.alert('tessssssssssssssssssssssssssst')
+    }
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <Grid container>
 
                 <Grid item xs={6}>
-                    <Controls.Input label="full Name" name="fullName" value={values.fullName} onChange={handleInputChange} />
-                    <Controls.Input label="email" name="email" value={values.email} onChange={handleInputChange} />
-                    <Controls.Input label="mobile" name="mobile" value={values.mobile} onChange={handleInputChange} />
-                    <Controls.Input label="city" name="city" value={values.city} onChange={handleInputChange} />
+                    <Controls.Input
+                        label="full Name" name="fullName"
+                        value={values.fullName} onChange={handleInputChange}
+                        error={errors.fullName}
+                    />
+                    <Controls.Input
+                        label="email" name="email"
+                        value={values.email} onChange={handleInputChange}
+                        error={errors.email}
+                    />
+                    <Controls.Input
+                        label="mobile" name="mobile"
+                        value={values.mobile} onChange={handleInputChange}
+                        error={errors.mobile}
+                    />
+                    <Controls.Input
+                        label="city" name="city"
+                        value={values.city} onChange={handleInputChange}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <Controls.RadioGroup name="gender" label="Gender" value={values.gender} onChange={handleInputChange} items={genderItems} />
-                    <Controls.Select name="departmentId" label="Department" value={values.departmentId}
-                        onChange={handleInputChange} options={employeeService.getDepartmentCollection()} />
+                    <Controls.RadioGroup
+                        name="gender" label="Gender" value={values.gender}
+                        onChange={handleInputChange} items={genderItems} />
+
+                    <Controls.Select
+                        name="departmentId" label="Department" value={values.departmentId}
+                        onChange={handleInputChange} options={employeeService.getDepartmentCollection()}
+                        error={errors.departmentId}
+                    />
                     <Controls.DataPicker name="hireDate" label="Hire date" value={values.hireDate} onChange={handleInputChange} />
                     <Controls.Checkbox name="isPermanent" label="Permanent Employee" value={values.isPermanent} onChange={handleInputChange} />
                     <div>
                         <Controls.Button text="Submit" type="Submit" />
-                        <Controls.Button text="Reset" type="Submit" color="default"/>
+                        <Controls.Button text="Reset" color="default" onClick={resetForm} />
                     </div>
                 </Grid>
 
