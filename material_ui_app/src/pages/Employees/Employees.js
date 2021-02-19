@@ -2,7 +2,7 @@ import { makeStyles, Paper, TableBody, TableCell, TableRow } from '@material-ui/
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import React, { useState } from 'react';
 import PageHeader from '../../components/PageHeader';
-import userTable from '../../components/userTable';
+import useTable from '../../components/useTable';
 import * as employeeService from '../../services/employeeService';
 import EmployeesForm from './EmployeesForm';
 
@@ -26,7 +26,7 @@ export default function Employees() {
     const classes = useStyles()
     const [records, setRecords] = useState(employeeService.getAllEmployees())
 
-    const { TblContainer, TbHead } = userTable(records, headCells)
+    const { TblContainer, TbHead, TblPagination, recordsAfterPaginationAndSorting } = useTable(records, headCells)
 
     return (
         <div>
@@ -37,7 +37,7 @@ export default function Employees() {
                 <TblContainer>
                     <TbHead />
                     <TableBody>
-                        {records.map(item =>
+                        {recordsAfterPaginationAndSorting().map(item =>
 
                         (<TableRow key={item.id}>
                             <TableCell>{item.fullName}</TableCell>
@@ -49,6 +49,7 @@ export default function Employees() {
                         )}
                     </TableBody>
                 </TblContainer>
+                <TblPagination />
             </Paper>
         </div>
     )
