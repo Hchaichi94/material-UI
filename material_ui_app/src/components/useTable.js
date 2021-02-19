@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-export default function useTable(records, headCells) {
+export default function useTable(records, headCells, firlterFn) {
 
     const classes = useStyles()
 
@@ -118,7 +118,7 @@ export default function useTable(records, headCells) {
     }
 
     const recordsAfterPaginationAndSorting = () => {
-        return stableSort(records, getComparator(order, orderBy)).slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+        return stableSort(firlterFn.fn(records), getComparator(order, orderBy)).slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     }
 
     return { TblContainer, TbHead, TblPagination, recordsAfterPaginationAndSorting }
