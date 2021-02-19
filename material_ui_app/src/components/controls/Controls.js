@@ -1,3 +1,4 @@
+import ActionButton from './ActionButton';
 import Button from './Button';
 import Checkbox from './Checkbox';
 import DataPicker from './DataPicker';
@@ -7,7 +8,7 @@ import Select from './Select';
 
 
 const Controls = {
-    Input, RadioGroup, Select, Checkbox, DataPicker, Button
+    Input, RadioGroup, Select, Checkbox, DataPicker, Button, ActionButton
 }
 
 

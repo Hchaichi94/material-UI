@@ -1,13 +1,17 @@
 import { makeStyles, Paper, TableBody, TableCell, TableRow, Toolbar } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { Search } from '@material-ui/icons';
+import { EditOutlined, Search } from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import { useState } from 'react';
 import Controls from '../../components/controls/Controls';
 import PageHeader from '../../components/PageHeader';
+import PopUp from '../../components/PopUp';
 import useTable from '../../components/useTable';
 import * as employeeService from '../../services/employeeService';
 import EmployeesForm from './EmployeesForm';
+
+
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -16,6 +20,10 @@ const useStyles = makeStyles(theme => ({
     },
     searchInput: {
         width: '75%'
+    },
+    newButton: {
+        position: "absolute",
+        right: '10px'
     }
 }))
 
@@ -23,7 +31,8 @@ const headCells = [
     { id: 'fullName', label: 'Employee Name' },
     { id: 'email', label: 'Employee email' },
     { id: 'mobile', label: 'Employee mobile' },
-    { id: 'department', label: 'Employee department', disableSorting: true }
+    { id: 'department', label: 'Employee department', disableSorting: true },
+    { id: 'actions', label: 'Actions' }
 ]
 
 
@@ -34,6 +43,10 @@ export default function Employees() {
     const [records, setRecords] = useState(employeeService.getAllEmployees())
     const [firlterFn, setFirlterFn] = useState({ fn: items => { return items } })
     const { TblContainer, TbHead, TblPagination, recordsAfterPaginationAndSorting } = useTable(records, headCells, firlterFn)
+    const [openPopup, setOpenPopup] = useState(false)
+
+
+
 
     const handleSearch = (e) => {
         let target = e.target
@@ -47,13 +60,19 @@ export default function Employees() {
         })
     }
 
+    const addOrEdit = (employee, resetForm) => {
+        employeeService.insertEmployee(employee)
+        resetForm()
+        setOpenPopup(false)
+        setRecords(employeeService.getAllEmployees())
+    }
 
     return (
         <div>
             <PageHeader title="New Employee" subTitle="Form with validation" icon={<PeopleOutlineIcon fontSize="large" />} />
 
             <Paper className={classes.pageContent}>
-                <EmployeesForm />
+
                 <Toolbar>
 
                     <Controls.Input
@@ -67,6 +86,13 @@ export default function Employees() {
                         }}
                         onChange={handleSearch}
                     />
+                    <Controls.Button
+                        className={classes.newButton}
+                        text="Add New"
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                        onClick={() => setOpenPopup(true)}
+                    />
                 </Toolbar>
                 <TblContainer>
                     <TbHead />
@@ -78,6 +104,14 @@ export default function Employees() {
                             <TableCell>{item.email}</TableCell>
                             <TableCell>{item.mobile}</TableCell>
                             <TableCell>{item.department}</TableCell>
+                            <TableCell>
+                                <Controls.ActionButton color="primary">
+                                    <EditOutlined fontSize="small" />
+                                </Controls.ActionButton>
+                                <Controls.ActionButton color="secondary">
+                                    <EditOutlined fontSize="small" />
+                                </Controls.ActionButton>
+                            </TableCell>
                         </TableRow>
                         )
                         )}
@@ -85,6 +119,9 @@ export default function Employees() {
                 </TblContainer>
                 <TblPagination />
             </Paper>
+            <PopUp openPopup={openPopup} setOpenPopup={setOpenPopup} title="Employee Form" >
+                <EmployeesForm addOrEdit={addOrEdit} />
+            </PopUp>
         </div>
     )
 }
